@@ -58,9 +58,7 @@ class MainActivity : AppCompatActivity() {
                         "An error occurred while saving",
                         Toast.LENGTH_SHORT
                     ).show()
-
                 }
-
             })
     }
 
