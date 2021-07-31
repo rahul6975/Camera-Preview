@@ -1,29 +1,44 @@
 package com.rahul.camerasnapshots
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.text.InputType
+import android.widget.EditText
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.rahul.camerasnapshots.adapter.ImageAdapter
+import com.rahul.camerasnapshots.repository.MyRepository
+import com.rahul.camerasnapshots.room.EntityClass
+import com.rahul.camerasnapshots.viewModel.MyViewModel
+import com.rahul.camerasnapshots.viewModel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-    private var camera: Camera? = null
-    private var preview: Preview? = null
-    private var imageCapture: ImageCapture? = null
     lateinit var myApplication: MyApplication
-
+    lateinit var myRepository: MyRepository
+    lateinit var viewModel: MyViewModel
+    lateinit var viewModelFactory: ViewModelFactory
+    private var imageList = emptyList<EntityClass>()
+    lateinit var imageAdapter: ImageAdapter
     val CAMERA_REQESUT_CODE = 1
-    val FOLDER_REQESUT_CODE = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,45 +46,52 @@ class MainActivity : AppCompatActivity() {
         checkPermissions()
 
         initViewsAndListeners()
+
+        setRecyclerView()
+    }
+
+    private fun setRecyclerView() {
+        val linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.apply {
+            layoutManager = linearLayoutManager
+            adapter = imageAdapter
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    recyclerView.context,
+                    (recyclerView.layoutManager as LinearLayoutManager).orientation
+                )
+            )
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.displayImage().observe(this, Observer {
+            imageAdapter.updateList(it)
+        })
+
     }
 
     private fun initViewsAndListeners() {
         myApplication = application as MyApplication
-        btnClick.setOnClickListener {
-            takePhotos()
+        myRepository = myApplication.myRepository
+
+        imageList = arrayListOf<EntityClass>()
+
+        imageAdapter = ImageAdapter(imageList)
+
+        viewModelFactory = ViewModelFactory(myRepository)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(MyViewModel::class.java)
+
+        addImage.setOnClickListener {
+            startActivity(Intent(this, CameraActivity::class.java))
         }
-    }
-
-    private fun takePhotos() {
-        //save photos
-
-        val photoFile = File(
-            externalMediaDirs.firstOrNull(),
-            "MySavedImages - ${System.currentTimeMillis()}.jpg"
-        )
-
-
-        val output = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-
-        imageCapture?.takePicture(
-            output,
-            ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    Toast.makeText(applicationContext, "Image saved", Toast.LENGTH_SHORT).show()
-//                    imgClicked.setImageURI(outputFileResults.savedUri)
-                }
-
-                override fun onError(exception: ImageCaptureException) {
-                    Toast.makeText(
-                        applicationContext,
-                        "An error occurred while saving",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
 
     }
+
 
     private fun checkPermissions() {
         if (ContextCompat.checkSelfPermission(
@@ -84,7 +106,6 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PERMISSION_GRANTED
         ) {
-            startCamera()
 
         } else {
             ActivityCompat.requestPermissions(
@@ -116,8 +137,6 @@ class MainActivity : AppCompatActivity() {
             ) == PERMISSION_GRANTED
         ) {
 
-            startCamera()
-
         } else {
             Toast.makeText(
                 this,
@@ -125,20 +144,5 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-    }
-
-    private fun startCamera() {
-
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        cameraProviderFuture.addListener(Runnable {
-            val cameraProvider = cameraProviderFuture.get()
-            preview = Preview.Builder().build()
-            preview?.setSurfaceProvider(cameraView.createSurfaceProvider(camera?.cameraInfo))
-            imageCapture = ImageCapture.Builder().build()
-            val cameraSelector =
-                CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
-            cameraProvider.unbindAll()
-            camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
-        }, ContextCompat.getMainExecutor(this))
     }
 }

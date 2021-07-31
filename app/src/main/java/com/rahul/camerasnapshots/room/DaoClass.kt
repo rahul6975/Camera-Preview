@@ -11,7 +11,7 @@ interface DaoClass {
 
     //adds the image into database
     @Insert
-    suspend fun addImage(entityClass: EntityClass)
+    fun addImage(entityClass: EntityClass)
 
     /*
    This will return a LiveData<List<EntityClass>> , so whenever the database is changed the observer
@@ -23,5 +23,5 @@ interface DaoClass {
 
     //delete previous data present in database
     @Query("DELETE FROM image_table")
-    suspend fun deleteAllImages()
+     fun deleteAllImages()
 }
