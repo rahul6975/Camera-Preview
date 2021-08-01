@@ -61,6 +61,9 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
     }
 
+    /*
+    below function initialize the variables
+     */
     private fun initViewsAndListeners() {
         myApplication = application as MyApplication
         myRepository = myApplication.myRepository
@@ -81,6 +84,10 @@ class MainActivity : AppCompatActivity(), ClickListener {
     }
 
 
+    /*
+         below function checks the required permissions and asks the same
+         to user if not granted yet
+   */
     private fun checkPermissions() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -134,6 +141,9 @@ class MainActivity : AppCompatActivity(), ClickListener {
         }
     }
 
+    /*
+       below function is called everytime any view is clicked in the recyclerview
+   */
     override fun onClick(position: Int) {
         var uri = ""
         viewModel.displayImage().observe(this, Observer {

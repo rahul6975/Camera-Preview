@@ -77,10 +77,15 @@ class ImagePreview : Fragment() {
 
         // Set up the buttons
         builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
-            // Here you get get input text from the Edittext
             albumName = input.text.toString()
             val entityClass =
                 EntityClass(imageName!!, current_time.toString(), albumName, uri!!)
+
+            /*
+            below code saves the image information such as image name, album name, time stamp,
+             image path url into database using a coroutine
+             */
+
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.addImage(entityClass)
             }

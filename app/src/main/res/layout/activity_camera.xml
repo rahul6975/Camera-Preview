@@ -30,7 +30,7 @@
         android:layout_marginBottom="@dimen/dp_20"
         android:background="#E4D908"
         android:padding="@dimen/dp_10"
-        android:text="Save Image"
+        android:text="@string/save_image"
         android:textAllCaps="false"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

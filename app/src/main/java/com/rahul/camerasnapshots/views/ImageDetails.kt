@@ -10,6 +10,10 @@ class ImageDetails : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_details)
+
+        /*
+        get the image path url from the intent and set it on the UI
+         */
         val url = intent.getStringExtra("uri")
         val uri = Uri.parse(url)
         imgDisplayImage.setImageURI(uri)

@@ -15,7 +15,7 @@ class ViewHolder(private val view: View, private val clickListener: ClickListene
         view.apply {
             tvAlbumName.text = entityClass.album
             tvImageName.text = entityClass.name
-            imgCapImage.setImageURI(Uri.parse(entityClass.path))
+            imgCapImage.setImageURI(Uri.parse(entityClass.path))  // sets the image using the uri present in database
         }
 
         view.setOnClickListener {

@@ -28,7 +28,7 @@ class ImageAdapter(
         return imageList.size
     }
 
-    //updates the latest data of the list
+    //updates the latest data of the database
     fun updateList(imageList: List<EntityClass>) {
         this.imageList = imageList
         notifyDataSetChanged()

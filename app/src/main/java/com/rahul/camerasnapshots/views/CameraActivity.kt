@@ -1,23 +1,9 @@
 package com.rahul.camerasnapshots.views
 
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.graphics.Matrix
-import android.graphics.PointF
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
-import android.text.InputType
-import android.util.AttributeSet
-import android.view.GestureDetector
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.Nullable
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -25,15 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.rahul.camerasnapshots.R
 import com.rahul.camerasnapshots.fragment.ImagePreview
 import com.rahul.camerasnapshots.repository.MyRepository
-import com.rahul.camerasnapshots.room.EntityClass
 import com.rahul.camerasnapshots.viewModel.MyViewModel
 import com.rahul.camerasnapshots.viewModel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.File
-import java.util.*
 
 class CameraActivity : AppCompatActivity() {
     private var camera: Camera? = null
@@ -41,7 +22,6 @@ class CameraActivity : AppCompatActivity() {
     lateinit var viewModel: MyViewModel
     lateinit var viewModelFactory: ViewModelFactory
     var imageName = ""
-    var albumName = ""
     var path = ""
     var folderName = "Camera Snapshots"
     lateinit var myApplication: MyApplication
@@ -71,8 +51,11 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun takePhotos() {
-        //save photos
         imageName = "image${System.currentTimeMillis()}.jpg"
+
+        /*
+        creates a new folder if not already present and add the image into the folder
+         */
         var file = File("${getExternalFilesDir(null)}${File.separator}${folderName}")
         if (!file.exists()) {
             file.mkdir()
@@ -83,12 +66,15 @@ class CameraActivity : AppCompatActivity() {
 
         val output = ImageCapture.OutputFileOptions.Builder(fileName).build()
 
+
         imageCapture?.takePicture(
             output,
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
+                /*
+                below callback is evokes if the image is saved successfully in the storage
+                 */
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-//                    showDialog()
                     btnClick.visibility = View.GONE
                     btnShowPreview.visibility = View.VISIBLE
                 }
@@ -103,6 +89,10 @@ class CameraActivity : AppCompatActivity() {
             })
 
         btnShowPreview.setOnClickListener {
+            /*
+            starts the fragment and send the uri of captured image to the fragment
+             */
+
             val bundle = Bundle()
             bundle.putString("uri", path)
             bundle.putString("image", imageName)
@@ -119,6 +109,10 @@ class CameraActivity : AppCompatActivity() {
 
     private fun startCamera() {
 
+        /*
+        initiates the cameraX into the UI
+         */
+
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider = cameraProviderFuture.get()
@@ -130,34 +124,5 @@ class CameraActivity : AppCompatActivity() {
             cameraProvider.unbindAll()
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
         }, ContextCompat.getMainExecutor(this))
-    }
-
-    fun showDialog() {
-        val builder: AlertDialog.Builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle("Album Name")
-
-        val current_time = Calendar.getInstance().time
-        // Set up the input
-        val input = EditText(this)
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setHint("Enter Album Name")
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(input)
-
-        // Set up the buttons
-        builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
-            // Here you get get input text from the Edittext
-            albumName = input.text.toString()
-            val entityClass =
-                EntityClass(imageName, current_time.toString(), albumName, path)
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.addImage(entityClass)
-            }
-            finish()
-        })
-        builder.setNegativeButton(
-            "Cancel",
-            DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
-        builder.show()
     }
 }
