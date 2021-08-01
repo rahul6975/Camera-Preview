@@ -1,13 +1,23 @@
 package com.rahul.camerasnapshots.views
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Matrix
+import android.graphics.PointF
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.text.InputType
+import android.util.AttributeSet
+import android.view.GestureDetector
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.Nullable
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -61,7 +71,7 @@ class CameraActivity : AppCompatActivity() {
 
     private fun takePhotos() {
         //save photos
-        imageName = "image-${System.currentTimeMillis()}.jpg"
+        imageName = "image${System.currentTimeMillis()}.jpg"
         var file = File("${getExternalFilesDir(null)}${File.separator}${folderName}")
         if (!file.exists()) {
             file.mkdir()
@@ -77,7 +87,6 @@ class CameraActivity : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    Toast.makeText(applicationContext, "Image saved", Toast.LENGTH_SHORT).show()
                     showDialog()
                 }
 
@@ -136,10 +145,4 @@ class CameraActivity : AppCompatActivity() {
         builder.show()
     }
 
-    private fun createFolder() {
-        var file = File(Environment.getDataDirectory(), folderName)
-        if (!file.exists()) {
-            file.mkdir()
-        }
-    }
 }

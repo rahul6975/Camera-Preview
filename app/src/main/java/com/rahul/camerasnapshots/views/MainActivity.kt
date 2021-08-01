@@ -23,13 +23,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ClickListener {
 
-    lateinit var myApplication: MyApplication
-    lateinit var myRepository: MyRepository
-    lateinit var viewModel: MyViewModel
-    lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var myApplication: MyApplication
+    private lateinit var myRepository: MyRepository
+    private lateinit var viewModel: MyViewModel
+    private lateinit var viewModelFactory: ViewModelFactory
     private var imageList = emptyList<EntityClass>()
-    lateinit var imageAdapter: ImageAdapter
-    val CAMERA_REQESUT_CODE = 1
+    private lateinit var imageAdapter: ImageAdapter
+    private val CAMERA_REQESUT_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +47,12 @@ class MainActivity : AppCompatActivity(), ClickListener {
         recyclerView.apply {
             layoutManager = linearLayoutManager
             adapter = imageAdapter
-            recyclerView.addItemDecoration(
-                DividerItemDecoration(
-                    recyclerView.context,
-                    (recyclerView.layoutManager as LinearLayoutManager).orientation
-                )
-            )
+//            recyclerView.addItemDecoration(
+//                DividerItemDecoration(
+//                    recyclerView.context,
+//                    (recyclerView.layoutManager as LinearLayoutManager).orientation
+//                )
+//            )
         }
     }
 
@@ -146,6 +146,5 @@ class MainActivity : AppCompatActivity(), ClickListener {
             intent.putExtra("uri", uri)
             startActivity(intent)
         })
-
     }
 }
