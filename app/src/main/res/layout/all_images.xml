@@ -46,7 +46,8 @@
             android:fontFamily="@font/roboto_mono_thin"
             android:text="Hello"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_10" />
+            android:textSize="@dimen/sp_8"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

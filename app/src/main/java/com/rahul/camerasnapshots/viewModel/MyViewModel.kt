@@ -12,7 +12,7 @@ import com.rahul.camerasnapshots.room.EntityClass
 class MyViewModel(private val repository: MyRepository) : ViewModel() {
 
     //addImage
-     fun addImage(entityClass: EntityClass) {
+    fun addImage(entityClass: EntityClass) {
         repository.addImage(entityClass)
     }
 
@@ -22,7 +22,7 @@ class MyViewModel(private val repository: MyRepository) : ViewModel() {
     }
 
     //deletes all the record from database
-     fun deleteImage() {
+    fun deleteImage() {
         repository.deletePreviousImage()
     }
 }

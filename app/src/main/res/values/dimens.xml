@@ -19,4 +19,6 @@
     <dimen name="dp_50">50dp</dimen>
     <dimen name="sp_10">10sp</dimen>
     <dimen name="dp_25">25dp</dimen>
+    <dimen name="sp_8">8sp</dimen>
+    <dimen name="dp_400">400dp</dimen>
 </resources>

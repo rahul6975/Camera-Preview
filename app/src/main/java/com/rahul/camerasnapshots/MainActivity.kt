@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rahul.camerasnapshots.adapter.ImageAdapter
+import com.rahul.camerasnapshots.clickInterface.ClickListener
 import com.rahul.camerasnapshots.repository.MyRepository
 import com.rahul.camerasnapshots.room.EntityClass
 import com.rahul.camerasnapshots.viewModel.MyViewModel
@@ -29,7 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ClickListener {
 
     lateinit var myApplication: MyApplication
     lateinit var myRepository: MyRepository
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         imageList = arrayListOf<EntityClass>()
 
-        imageAdapter = ImageAdapter(imageList)
+        imageAdapter = ImageAdapter(imageList, this)
 
         viewModelFactory = ViewModelFactory(myRepository)
 
@@ -144,5 +145,16 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    override fun onClick(position: Int) {
+        var uri = ""
+        viewModel.displayImage().observe(this, Observer {
+            uri = it[position].path
+            val intent = Intent(this, ImageDetails::class.java)
+            intent.putExtra("uri", uri)
+            startActivity(intent)
+        })
+
     }
 }

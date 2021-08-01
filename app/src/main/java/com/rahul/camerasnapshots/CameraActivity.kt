@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.text.InputType
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.camera.core.*
@@ -30,6 +31,7 @@ class CameraActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelFactory
     var imageName = ""
     var albumName = ""
+    var path = ""
     var folderName = "Camera Snapshots"
     lateinit var myApplication: MyApplication
     lateinit var myRepository: MyRepository
@@ -60,12 +62,15 @@ class CameraActivity : AppCompatActivity() {
     private fun takePhotos() {
         //save photos
         imageName = "image-${System.currentTimeMillis()}.jpg"
-        var file = File(Environment.getDataDirectory(), folderName)
+        var file = File("${getExternalFilesDir(null)}${File.separator}${folderName}")
         if (!file.exists()) {
             file.mkdir()
         }
 
-        val output = ImageCapture.OutputFileOptions.Builder(file).build()
+        var fileName = File(file, imageName)
+        path = fileName.absolutePath
+
+        val output = ImageCapture.OutputFileOptions.Builder(fileName).build()
 
         imageCapture?.takePicture(
             output,
@@ -119,7 +124,7 @@ class CameraActivity : AppCompatActivity() {
             // Here you get get input text from the Edittext
             albumName = input.text.toString()
             val entityClass =
-                EntityClass(imageName, current_time.toString(), albumName)
+                EntityClass(imageName, current_time.toString(), albumName, path)
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.addImage(entityClass)
             }
