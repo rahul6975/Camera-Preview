@@ -29,7 +29,6 @@ class ImagePreview : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var myApplication: MyApplication
     lateinit var myRepository: MyRepository
-
     private var uri: String? = ""
     private var albumName = ""
     private var imageName: String? = ""
@@ -44,22 +43,21 @@ class ImagePreview : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        myApplication = activity?.application as MyApplication
-
-        myRepository = myApplication.myRepository
-
-        viewModelFactory = ViewModelFactory(myRepository)
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MyViewModel::class.java)
+        initViews()
 
         imgPreview.setImageURI(Uri.parse(uri))
-
         btnSaveImage.setOnClickListener {
             showDialog()
         }
 
+    }
+
+    private fun initViews() {
+        myApplication = activity?.application as MyApplication
+        myRepository = myApplication.myRepository
+        viewModelFactory = ViewModelFactory(myRepository)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(MyViewModel::class.java)
     }
 
     fun showDialog() {

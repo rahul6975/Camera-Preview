@@ -7,7 +7,7 @@ import com.rahul.camerasnapshots.room.EntityClass
 class MyRepository(private val daoClass: DaoClass) {
 
     //adds the image into the room database
-     fun addImage(entityClass: EntityClass) {
+   suspend  fun addImage(entityClass: EntityClass) {
         daoClass.addImage(entityClass)
     }
 
@@ -17,7 +17,7 @@ class MyRepository(private val daoClass: DaoClass) {
     }
 
     //use repository to call dao to delete the previous image_table
-     fun deletePreviousImage() {
+    suspend fun deletePreviousImage() {
         daoClass.deleteAllImages()
     }
 }
