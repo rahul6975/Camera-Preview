@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
         initViewsAndListeners()
 
         setRecyclerView()
+
     }
 
     private fun setRecyclerView() {

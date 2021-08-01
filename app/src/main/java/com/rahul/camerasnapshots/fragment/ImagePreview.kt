@@ -40,7 +40,6 @@ class ImagePreview : Fragment() {
         uri = arguments?.getString("uri")
         imageName = arguments?.getString("image")
         return inflater.inflate(R.layout.fragment_image_preview, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -96,5 +95,4 @@ class ImagePreview : Fragment() {
             DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
         builder.show()
     }
-
 }

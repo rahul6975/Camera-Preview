@@ -22,5 +22,4 @@ class ViewHolder(private val view: View, private val clickListener: ClickListene
             clickListener.onClick(adapterPosition)
         }
     }
-
 }
