@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -47,12 +48,6 @@ class MainActivity : AppCompatActivity(), ClickListener {
         recyclerView.apply {
             layoutManager = linearLayoutManager
             adapter = imageAdapter
-//            recyclerView.addItemDecoration(
-//                DividerItemDecoration(
-//                    recyclerView.context,
-//                    (recyclerView.layoutManager as LinearLayoutManager).orientation
-//                )
-//            )
         }
     }
 
@@ -60,6 +55,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
         super.onResume()
 
         viewModel.displayImage().observe(this, Observer {
+            progressBar.visibility = View.GONE
             imageAdapter.updateList(it)
         })
 

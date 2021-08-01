@@ -1,5 +1,6 @@
 package com.rahul.camerasnapshots.viewHolder
 
+import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.rahul.camerasnapshots.clickInterface.ClickListener
@@ -14,7 +15,7 @@ class ViewHolder(private val view: View, private val clickListener: ClickListene
         view.apply {
             tvAlbumName.text = entityClass.album
             tvImageName.text = entityClass.name
-            tvTime.text = entityClass.time
+            imgCapImage.setImageURI(Uri.parse(entityClass.path))
         }
 
         view.setOnClickListener {
