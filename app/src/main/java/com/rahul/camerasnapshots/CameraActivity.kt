@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.text.InputType
 import android.widget.EditText
 import android.widget.Toast
@@ -29,6 +30,7 @@ class CameraActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelFactory
     var imageName = ""
     var albumName = ""
+    var folderName = "Camera Snapshots"
     lateinit var myApplication: MyApplication
     lateinit var myRepository: MyRepository
 
@@ -58,11 +60,12 @@ class CameraActivity : AppCompatActivity() {
     private fun takePhotos() {
         //save photos
         imageName = "image-${System.currentTimeMillis()}.jpg"
-        val photoFile = File(
-            externalMediaDirs.firstOrNull(),
-            imageName
-        )
-        val output = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+        var file = File(Environment.getDataDirectory(), folderName)
+        if (!file.exists()) {
+            file.mkdir()
+        }
+
+        val output = ImageCapture.OutputFileOptions.Builder(file).build()
 
         imageCapture?.takePicture(
             output,
@@ -126,5 +129,12 @@ class CameraActivity : AppCompatActivity() {
             "Cancel",
             DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
         builder.show()
+    }
+
+    private fun createFolder() {
+        var file = File(Environment.getDataDirectory(), folderName)
+        if (!file.exists()) {
+            file.mkdir()
+        }
     }
 }
