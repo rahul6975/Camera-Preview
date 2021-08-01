@@ -1,4 +1,4 @@
-package com.rahul.camerasnapshots
+package com.rahul.camerasnapshots.views
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.text.InputType
-import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import com.rahul.camerasnapshots.R
 import com.rahul.camerasnapshots.repository.MyRepository
 import com.rahul.camerasnapshots.room.EntityClass
 import com.rahul.camerasnapshots.viewModel.MyViewModel

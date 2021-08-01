@@ -1,10 +1,9 @@
-package com.rahul.camerasnapshots
+package com.rahul.camerasnapshots.views
 
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
+import com.rahul.camerasnapshots.R
 import kotlinx.android.synthetic.main.activity_image_details.*
 
 class ImageDetails : AppCompatActivity() {

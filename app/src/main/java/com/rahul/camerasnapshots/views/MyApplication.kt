@@ -1,4 +1,4 @@
-package com.rahul.camerasnapshots
+package com.rahul.camerasnapshots.views
 
 import android.app.Application
 import com.rahul.camerasnapshots.repository.MyRepository

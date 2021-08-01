@@ -1,23 +1,18 @@
-package com.rahul.camerasnapshots
+package com.rahul.camerasnapshots.views
 
 import android.Manifest
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
-import android.widget.EditText
 import android.widget.Toast
-import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rahul.camerasnapshots.R
 import com.rahul.camerasnapshots.adapter.ImageAdapter
 import com.rahul.camerasnapshots.clickInterface.ClickListener
 import com.rahul.camerasnapshots.repository.MyRepository
@@ -25,10 +20,6 @@ import com.rahul.camerasnapshots.room.EntityClass
 import com.rahul.camerasnapshots.viewModel.MyViewModel
 import com.rahul.camerasnapshots.viewModel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.File
 
 class MainActivity : AppCompatActivity(), ClickListener {
 
