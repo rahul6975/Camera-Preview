@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/curve_bg.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/layout/activity_camera.xml" value="0.17777777777777778" />
+        <entry key="app/src/main/res/layout/activity_image_details.xml" value="0.17777777777777778" />
+        <entry key="app/src/main/res/layout/activity_image_preview.xml" value="0.1828125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/layout/all_images.xml" value="0.17777777777777778" />
+        <entry key="app/src/main/res/layout/fragment_image_preview.xml" value="0.16822916666666668" />
       </map>
     </option>
   </component>

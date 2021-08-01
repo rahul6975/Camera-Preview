@@ -17,7 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CameraSnapshots">
-        <activity android:name=".views.ImageDetails"></activity>
+        <activity
+            android:name=".views.ImagePreview"
+            android:exported="true" />
+        <activity android:name=".views.ImageDetails" />
         <activity android:name=".views.CameraActivity" />
         <activity android:name=".views.MainActivity">
             <intent-filter>

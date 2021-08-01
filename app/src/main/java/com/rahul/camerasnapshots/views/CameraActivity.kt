@@ -23,6 +23,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.rahul.camerasnapshots.R
+import com.rahul.camerasnapshots.fragment.ImagePreview
 import com.rahul.camerasnapshots.repository.MyRepository
 import com.rahul.camerasnapshots.room.EntityClass
 import com.rahul.camerasnapshots.viewModel.MyViewModel
@@ -87,7 +88,9 @@ class CameraActivity : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    showDialog()
+//                    showDialog()
+                    btnClick.visibility = View.GONE
+                    btnShowPreview.visibility = View.VISIBLE
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -98,6 +101,19 @@ class CameraActivity : AppCompatActivity() {
                     ).show()
                 }
             })
+
+        btnShowPreview.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("uri", path)
+            bundle.putString("image", imageName)
+            val imagePreview = ImagePreview()
+            imagePreview.arguments = bundle
+
+            btnShowPreview.visibility = View.GONE
+
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.add(R.id.Frame, imagePreview, "ImagePreview").commit()
+        }
 
     }
 
@@ -144,5 +160,4 @@ class CameraActivity : AppCompatActivity() {
             DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
         builder.show()
     }
-
 }
